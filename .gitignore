@@ -130,4 +130,4 @@ dmypy.json
 # vscode
 .vscode/
 settings.json
-.flask_session
+.flask_session/
