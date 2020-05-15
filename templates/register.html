@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Account Creation
+{% endblock %}
+
+{% block body %}
+    <h1>Create Account</h1>
+
+    <form action="{{ url_for('register') }}" method="post">
+        <label for='username'>Username</label>
+        <input name='username' id='username' required><br>
+        <label for='password'>Password</label>
+        <input type='password' name='password' id='password' required><br>
+        <input type='submit' value='Register'>
+    </form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Books
+{% endblock %}
+
+{% block body %}
+    <h1>Welcome to Book Ratings</h1>
+    
+    <p>Login or click here to <a href="{{ url_for('registuser')}}">Register</a></p>
+
+    <form action="{{ url_for('search') }}" method="post">
+        <label for='username'>Username</label>
+        <input name='username' id='username' required>
+        <label for='password'>Password</label>
+        <input type='password' name='password' id='password' required>
+        <input type='submit' value='Login'>
+    </form>
+{% endblock %}
