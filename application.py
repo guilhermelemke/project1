@@ -25,8 +25,8 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     return render_template('index.html')
 
-@app.route("/search", methods=['POST'])
-def search():
+@app.route("/login", methods=['POST'])
+def login():
     username = request.form.get('username')
     password = request.form.get('password')
     if db.execute("SELECT * FROM users WHERE users.username = :name AND users.password = :password",
@@ -49,3 +49,11 @@ def register():
         return render_template("search.html", username=username)
     except:
         return render_template('error.html')
+
+@app.route("/search", methods=['GET'])
+def search():
+    option = request.form.get('options')
+    search = request.form.get('search')
+
+    book = db.execute(f"SELECT * FROM books WHERE {option} = :search", {"search": search}).fetchall()
+    return render_template("results.html", book=book)
