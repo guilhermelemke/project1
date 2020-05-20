@@ -131,3 +131,6 @@ dmypy.json
 .vscode/
 settings.json
 .flask_session/
+
+# Sessions
+flask_session/
