@@ -7,14 +7,14 @@
 {% block body %}
     <h1>Welcome {{ username }}</h1>
 
-    <form action="{{ url_for('search') }}" method="post">
-        <input type="radio" value="title" id="title" name="book">
+    <form action="{{ url_for('search') }}" method="POST">
+        <input type="radio" value="title" id="title" name="options">
         <label for="title">Title</label>
-        <input type="radio" value="author" id="author" name="book">
+        <input type="radio" value="author" id="author" name="options">
         <label for="author">Author</label>
-        <input type="radio" value="year" id="year" name="book">
+        <input type="radio" value="year" id="year" name="options">
         <label for="year">Year</label>
-        <input type="radio" value="isbn" id="isbn" name="book">
+        <input type="radio" value="isbn" id="isbn" name="options">
         <label for="isbn">ISBN</label><br>
 
         <label for='search'>Search for:</label>
