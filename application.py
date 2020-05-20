@@ -42,11 +42,10 @@ def registuser():
 def register():
     username = request.form.get('username')
     password = request.form.get('password')
-    #try:
-    db.execute("INSERT INTO users (username, password) VALUES (:user, :password)",
-        {"user": username, "password": password})
-    db.commit()
-    
-    return render_template("search.html", username=username)
-    #except:
-     #   return render_template('error.html')
+    try:
+        db.execute("INSERT INTO users (username, password) VALUES (:user, :password)",
+            {"user": username, "password": password})
+        db.commit()
+        return render_template("search.html", username=username)
+    except:
+        return render_template('error.html')
