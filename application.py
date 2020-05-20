@@ -27,22 +27,26 @@ def index():
 
 @app.route("/search", methods=['POST'])
 def search():
-    name = request.form.get('username')
+    username = request.form.get('username')
     password = request.form.get('password')
-    if db.execute("SELECT * FROM users WHERE users.user = :name AND users.password = :password", {"name": name, "password": password}).rowcount == 1:
-        return render_template("search.html", username=name)
+    if db.execute("SELECT * FROM users WHERE users.username = :name AND users.password = :password",
+        {"name": username, "password": password}).rowcount == 1:
+        return render_template("search.html", username=username)
     return render_template('error.html')
 
-@app.route("/registuser", methods=['GET'])
+@app.route("/registuser", methods=['GET', 'POST'])
 def registuser():
     return render_template('register.html')
 
-@app.route("/register", methods=['GET', 'POST'])
+@app.route("/register", methods=['POST'])
 def register():
-    name = request.form.get('username')
+    username = request.form.get('username')
     password = request.form.get('password')
-    if db.execute("SELECT * FROM users WHERE users.user = :name", {"name": name}).rowcount == 1:
-        return render_template('error.html')
-    db.execute("INSERT INTO users (user, password) VALUES (:name, :password)", {"name": name, "password": password})
+    #try:
+    db.execute("INSERT INTO users (username, password) VALUES (:user, :password)",
+        {"user": username, "password": password})
     db.commit()
-    return render_template("search.html", username=name)
+    
+    return render_template("search.html", username=username)
+    #except:
+     #   return render_template('error.html')
