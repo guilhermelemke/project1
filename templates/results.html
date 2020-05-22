@@ -5,10 +5,13 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Welcome to Book Ratings</h1>
-    
-    <h1>Welcome {{ book }}</h1>
-    <h1>Welcome {{ book.isbn }}</h1>
 
+    <h1>Books Found:</h1><br>
+    <ul>
+        {% for book in books %}
+            <li><a href="{{ url_for('details', isbn=book.isbn) }}"> {{ book.title }} | {{ book.author }} | {{ book.isbn }}</a></li>
+            <br>
+        {% endfor %}
+    </ul>
  
 {% endblock %}

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -50,10 +50,22 @@ def register():
     except:
         return render_template('error.html')
 
-@app.route("/search", methods=['GET'])
+@app.route("/search", methods=['POST'])
 def search():
     option = request.form.get('options')
     search = request.form.get('search')
 
-    book = db.execute(f"SELECT * FROM books WHERE {option} = :search", {"search": search}).fetchall()
-    return render_template("results.html", book=book)
+    books = db.execute(f"SELECT * FROM books WHERE LOWER({option}) LIKE LOWER(:search)",
+        {"search": '%'+search+'%'}).fetchall()
+    return render_template("results.html", books=books)
+
+@app.route("/logout", methods=['GET'])
+def logout():
+    return render_template('index.html')
+
+@app.route("/details", methods=['GET'])
+def details():
+    isbn = request.args.get('isbn')
+    book_info = db.execute(f"SELECT * FROM books WHERE isbn = :selected_book",
+        {"selected_book": isbn}).fetchall()
+    return render_template('details.html', book=book_info)
