@@ -13,8 +13,33 @@
             <li> {{ value.title }} </li>
             <li> {{ value.author }} </li>
             <li> {{ value.year }} </li>
+            <li> {{ value.isbn }} </li>
+            <li> {{ ratings_count }} </li>
+            <li> {{ average_rating }}</li>
             <br>
+
+            <form action="{{ url_for('review', isbn=value.isbn) }}" method="POST">
+                <label>Post your review:</label>
+                <input type="radio" value="1" id="1" name="ratings">
+                <label for="1">1</label>
+                <input type="radio" value="2" id="2" name="ratings">
+                <label for="2">2</label>
+                <input type="radio" value="3" id="3" name="ratings">
+                <label for="3">3</label>
+                <input type="radio" value="4" id="4" name="ratings">
+                <label for="4">4</label>
+                <input type="radio" value="5" id="5" name="ratings">
+                <label for="5">5</label><br>
+        
+                <textarea id="description" name="description"
+                          rows="5" cols="33">
+                </textarea>
+                <br>
+                <input type='submit' value='Review'>
+            </form> 
         {% endfor %}
     </ul>
+
+ 
 
 {% endblock %}

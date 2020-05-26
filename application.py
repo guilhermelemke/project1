@@ -1,6 +1,6 @@
-import os
+import os, requests
 
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for, json
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -31,6 +31,7 @@ def login():
     password = request.form.get('password')
     if db.execute("SELECT * FROM users WHERE users.username = :name AND users.password = :password",
         {"name": username, "password": password}).rowcount == 1:
+        session['username'] = username
         return render_template("search.html", username=username)
     return render_template('error.html')
 
@@ -68,4 +69,25 @@ def details():
     isbn = request.args.get('isbn')
     book_info = db.execute(f"SELECT * FROM books WHERE isbn = :selected_book",
         {"selected_book": isbn}).fetchall()
-    return render_template('details.html', book=book_info)
+
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "OoKksVO9s5wfeWe9XAtrw", "isbns": isbn})
+    response = res.json()
+    #value = json.dumps(response)
+    average_rating = response['books'][0]['average_rating']
+    ratings_count = response['books'][0]['ratings_count']
+
+    return render_template('details.html', book=book_info, average_rating=average_rating, ratings_count=ratings_count)
+
+@app.route("/review", methods=['POST'])
+def review():
+    rating = request.form.get('ratings')
+    description = request.form.get('description')
+    isbn = request.args.get('isbn')
+
+    if db.execute("SELECT * FROM ratings WHERE username = :username AND isbn = :isbn",
+        {"username": session['username'], "isbn": isbn}).rowcount == 0:
+            db.execute("INSERT INTO ratings (review_rating, description, isbn, username) VALUES (:review_rating, :description, :isbn, :username)",
+                {"review_rating": rating, "description": description, "isbn": isbn, "username": session['username']})
+            db.commit()
+            return render_template("reviewed.html")
+    return render_template("error.html")
