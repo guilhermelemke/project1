@@ -5,15 +5,23 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Welcome to Book Ratings</h1>
-    
-    <p>Login or click here to <a href="{{ url_for('registuser')}}">Register</a></p>
 
-    <form action="{{ url_for('login') }}" method="post">
-        <label for='username'>Username</label>
-        <input name='username' id='username' required>
-        <label for='password'>Password</label>
-        <input type='password' name='password' id='password' required>
-        <input type='submit' value='Login'>
-    </form>
+    <nav class="navbar navbar-light bg-light justify-content-center">
+        <span class="navbar-brand mb-0 h1">Welcome to Book Ratings</span>
+    </nav>
+
+        <div class="row h-100 justify-content-center align-items-center">
+            <form action="{{ url_for('login') }}" method="post" class="w-25 p-3">
+                <div class="form-group">
+                    <label for='username'>Username</label>
+                    <input name='username' class="form-control" id='username' placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for='password'>Password</label>
+                    <input type='password' class="form-control" name='password' id='password' required>
+                </div>
+                <input type='submit' class="btn btn-primary" value='Login'>
+                <p>Login or click here to <a href="{{ url_for('registuser')}}">Register</a></p>
+            </form>
+        </div>
 {% endblock %}
